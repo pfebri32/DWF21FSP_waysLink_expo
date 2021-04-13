@@ -1,21 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import {
+  useFonts,
+  OpenSans_800ExtraBold,
+  OpenSans_400Regular,
+  OpenSans_700Bold,
+} from '@expo-google-fonts/open-sans';
 
-export default function App() {
+// Screens.
+import Landing from './src/screens/Landing';
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  // Fonts.
+  const [fonts] = useFonts({
+    OpenSans_800ExtraBold,
+    OpenSans_400Regular,
+    OpenSans_700Bold,
+  });
+  if (!fonts) {
+    return <AppLoading />;
+  }
+
+  // Configs.
+  const Navigator = {
+    initialRouteName: 'Landing',
+    screenOptions: {
+      headerShown: false,
+    },
+  };
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator {...Navigator}>
+        <Stack.Screen name="Landing" component={Landing} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
