@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-// Layouts.
+// Components.
 import BaseLayout from '../components/Layouts/BaseLayout';
 import ButtonA from '../components/Buttons/ButtonA';
 
-const Landing = () => {
+const Landing = ({ navigation }) => {
   return (
     <BaseLayout style={styles.container}>
       <View style={styles.headContainer}>
@@ -29,7 +29,7 @@ const Landing = () => {
         <ButtonA
           title="Login"
           buttonStyle={styles.buttonLogin}
-          onPress={() => alert('in')}
+          onPress={() => navigation.navigate('Login')}
         />
         <ButtonA
           title="Register"

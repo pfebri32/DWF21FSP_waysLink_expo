@@ -7,10 +7,13 @@ import {
   OpenSans_800ExtraBold,
   OpenSans_400Regular,
   OpenSans_700Bold,
+  OpenSans_600SemiBold,
 } from '@expo-google-fonts/open-sans';
 
 // Screens.
 import Landing from './src/screens/Landing';
+import Login from './src/screens/Login';
+import Register from './src/screens/Register';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +22,7 @@ const App = () => {
   const [fonts] = useFonts({
     OpenSans_800ExtraBold,
     OpenSans_400Regular,
+    OpenSans_600SemiBold,
     OpenSans_700Bold,
   });
   if (!fonts) {
@@ -36,6 +40,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator {...Navigator}>
         <Stack.Screen name="Landing" component={Landing} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,21 +7,29 @@ import ButtonA from '../components/Buttons/ButtonA';
 import ScrollLayout from '../components/Layouts/ScrollLayout';
 import InputA from '../components/Inputs/InputA';
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
   // Forms.
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   return (
     <ScrollLayout
       style={styles.container}
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
     >
-      <HeaderA title="Login" style={styles.header} />
+      <HeaderA title="Register" style={styles.header} />
       <View style={styles.form}>
+        <InputA
+          label="Full Name"
+          placeholder="Name"
+          value={name}
+          onChangeText={(text) => setName(text)}
+        />
         <InputA
           label="Email"
           placeholder="Email"
           value={email}
+          containerStyle={styles.inputMargin}
           onChangeText={(text) => setEmail(text)}
         />
         <InputA
@@ -35,16 +43,16 @@ const Login = ({ navigation }) => {
       <View>
         <ButtonA title="Login" />
         <ButtonA
-          title="Don't have an account?"
+          title="Already have an account?"
           buttonStyle={styles.buttonMargin}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Login')}
         />
       </View>
     </ScrollLayout>
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {
