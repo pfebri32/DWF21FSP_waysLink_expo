@@ -1,14 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/routers';
 
 // Components.
 import BaseLayout from '../components/Layouts/BaseLayout';
 import ButtonA from '../components/Buttons/ButtonA';
 
-const Landing = ({ navigation }) => {
+const Landing = ({ navigation, auth }) => {
+  // Validate user.
+  if (auth.isLogin) {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Template' }],
+      })
+    );
+  }
   return (
     <BaseLayout style={styles.container}>
       <View style={styles.headContainer}>
+        <View style={styles.imageContainer}>
+          <View>
+            <Image
+              style={styles.imagePC}
+              source={require('../../assets/PC.png')}
+            />
+          </View>
+          <View style={styles.imageAbsolute}>
+            <Image
+              style={styles.imagePhone}
+              source={require('../../assets/Phone.png')}
+            />
+          </View>
+        </View>
         <View style={styles.header}>
           <Text style={styles.headerText}>The Only Link</Text>
           <Text style={styles.headerText}>You’ll Ever Need</Text>
@@ -35,15 +60,38 @@ const Landing = ({ navigation }) => {
           title="Register"
           buttonStyle={styles.buttonRegister}
           titleStyle={styles.buttonTitleRegister}
+          onPress={() => navigation.navigate('Register')}
         />
       </View>
     </BaseLayout>
   );
 };
 
-export default Landing;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Landing);
 
 const styles = StyleSheet.create({
+  imageAbsolute: {
+    position: 'absolute',
+    bottom: -30,
+    right: -30,
+  },
+  imagePhone: {
+    height: 220,
+    resizeMode: 'contain',
+  },
+  imagePC: {
+    height: 240,
+    resizeMode: 'contain',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 30,
+  },
   buttonLogin: {
     borderColor: '#fff',
     borderWidth: 2,
@@ -75,6 +123,7 @@ const styles = StyleSheet.create({
   headContainer: {
     flex: 1,
     justifyContent: 'center',
+    position: 'relative',
   },
   headerText: {
     color: '#fff',

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/routers';
 import { StyleSheet, View } from 'react-native';
 
 // Components.
@@ -7,7 +9,20 @@ import ButtonA from '../components/Buttons/ButtonA';
 import ScrollLayout from '../components/Layouts/ScrollLayout';
 import InputA from '../components/Inputs/InputA';
 
-const Login = ({ navigation }) => {
+// Actions.
+import { loginAction } from '../actions/authAction';
+
+const Login = ({ navigation, login, auth }) => {
+  // Validate user.
+  if (auth.isLogin) {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Template' }],
+      })
+    );
+  }
+
   // Forms.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,10 +45,11 @@ const Login = ({ navigation }) => {
           value={password}
           containerStyle={styles.inputMargin}
           onChangeText={(text) => setPassword(text)}
+          secureTextEntry
         />
       </View>
       <View>
-        <ButtonA title="Login" />
+        <ButtonA title="Login" onPress={() => login(email, password)} />
         <ButtonA
           title="Don't have an account?"
           buttonStyle={styles.buttonMargin}
@@ -44,7 +60,17 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password) => dispatch(loginAction(email, password)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   container: {

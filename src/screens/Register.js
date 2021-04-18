@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/routers';
 
 // Components.
 import HeaderA from '../components/Headers/HeaderA';
@@ -7,7 +9,20 @@ import ButtonA from '../components/Buttons/ButtonA';
 import ScrollLayout from '../components/Layouts/ScrollLayout';
 import InputA from '../components/Inputs/InputA';
 
-const Register = ({ navigation }) => {
+// Configs.
+import { registerAction } from '../actions/authAction';
+
+const Register = ({ navigation, auth, register }) => {
+  // Validate user.
+  if (auth.isLogin) {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Template' }],
+      })
+    );
+  }
+
   // Forms.
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -38,10 +53,14 @@ const Register = ({ navigation }) => {
           value={password}
           containerStyle={styles.inputMargin}
           onChangeText={(text) => setPassword(text)}
+          secureTextEntry
         />
       </View>
       <View>
-        <ButtonA title="Login" />
+        <ButtonA
+          title="Register"
+          onPress={() => register(name, email, password)}
+        />
         <ButtonA
           title="Already have an account?"
           buttonStyle={styles.buttonMargin}
@@ -52,7 +71,18 @@ const Register = ({ navigation }) => {
   );
 };
 
-export default Register;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (name, email, password) =>
+      dispatch(registerAction(name, email, password)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
 
 const styles = StyleSheet.create({
   container: {
